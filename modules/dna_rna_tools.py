@@ -90,4 +90,3 @@ def reverse_complement(seqs: list) -> list:
     - (list): a list of reverse complementary sequences
     """
     return complement(reverse(seqs))
-
