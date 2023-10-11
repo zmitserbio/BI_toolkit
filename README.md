@@ -11,6 +11,7 @@ This function uses three toolkits to perform a variety of tasks with nucleic aci
 - 'fastq': uses `fastq_filtration` toolkit
 
 Below further requirements for each toolkit are specified. Even though the program performs input checks and provides helpful error messages, the following information should be read carefully prior to program use.
+
 ## 'dna_rna' - dna_rna_tools toolkit
 > This toolkit, with `run_dna_rna_tools` as its main function, allows to perform basic operations with strings representing DNA or RNA sequences.
 
@@ -18,7 +19,7 @@ Below further requirements for each toolkit are specified. Even though the progr
 
 ### Input:
 
-All operations in this toolkit process an orbitrary number of nucleic acid sequences ('str') containing 'A', 'T'/'U', 'C', 'G' in either case. This toolkit does not require any additional keyword arguments. Instead, the last positional argument provided should be a name ('str') of a desired operation. It accepts the following names:
+All operations in this toolkit process an arbitrary number of nucleic acid sequences ('str') containing 'A', 'T'/'U', 'C', 'G' in either case. This toolkit does not require any additional keyword arguments. Instead, the last positional argument provided should be the name ('str') of a desired operation. It accepts the following names:
 - 'transcribe': transcribes DNA sequences; utilises `transcribe` function from *modules/dna_rna_tools.py*; **DNA input only!**
 - 'reverse': reverses nucleic acid sequences; utilises `reverse` function from *modules/dna_rna_tools.py*; DNA and RNA input
 - 'complement': produces complementary sequences; utilises `complement` function from *modules/dna_rna_tools.py*; DNA and RNA input
@@ -29,7 +30,7 @@ All operations in this toolkit process an orbitrary number of nucleic acid seque
 - if there is only one sequence, a 'str' object is returned
 - if there are multiple sequences, a 'list' object is returned
 
-Below examples of usage are provided for each opeartion:
+Below examples of usage are provided for each operation:
 
 **'transcribe'**
 ```python
@@ -52,7 +53,7 @@ run_beginner_bioinf_tools('uAg', 'reverse_complement', toolbox = 'dna_rna') # 'c
 run_beginner_bioinf_tools('uAg', 'ATCCT', 'reverse_complement', toolbox = 'dna_rna') # ['cUa', 'AGGAT']
 ```
 
-> Since reverse transcription is used much less frequently than normal transcription, and to prevent accidental "contamination" with RNA sequences, in 'transcribe' supports only DNA sequences. For reverse transcription a separate operation should be used.
+> Since reverse transcription is used much less frequently than normal transcription, and to prevent accidental "contamination" with RNA sequences, 'transcribe' supports only DNA sequences. For reverse transcription a separate operation should be used (currently not implemented).
 
 ## 'proteins' - protein_tools toolkit
 > This toolkit, with `run_protein_tools` as its main function, allows to perform several operations with strings representing amino acid sequences.
@@ -74,8 +75,8 @@ Below further information on each of these options is provided:
 **Input:** 
 
 - _an arbitrary number_ of sequences, where the first sequence is a reference to which the following sequences are compared; each argument should be of type 'str'. **All sequences must be of equal length!**
-- _second-to-last_ positional argument is the number of decimals to round the number to; type 'int'
-- _last_ positional argument determines whether percentages are returned instead of fractions; type 'bool'
+- _second-to-last_ positional argument is the number of decimals to round the number to; equals 3 if not specified; type 'int'
+- _last_ positional argument determines whether percentages are returned instead of fractions; equals False if not specified; type 'bool'
 
 **Output:** 
 
@@ -89,7 +90,7 @@ a 'dict' object where:
 run_beginner_bioinf_tools('LalKekKe', 'AwYLalKe', 'lalkekFM', 2, False, toolbox = 'proteins', options = 'similarity') # {'AwYLalKe': 0.25, 'lalkekFM': 0.5}
 run_beginner_bioinf_tools('LalKekKe', 'AwYLalKe', 'lalkekFM', 1, True, toolbox = 'proteins', options = 'similarity') # {'AwYLalKe': 25.0, 'lalkekFM': 50.0}
 ```
-> Equal length requirement results from the fact that sequences of non-equal length cannot be compared unambiguously. For instance, what is the percentage of similarity between KEK and KEKE: 100%, when we compare them 'head-to-head', or 0%, when we compare 'tail-to-tail'? What about LALKEKFM and ALKEKF? This option expects sequences already alligned. If that is not the case for your data, we suggest using other programs. Alternatively, 'find_pattern' can potentially be modified to find 'imprecise' matches, which in turn can be built upon to create a proper allignment tool. However, such task goes far beyond the scope of this program's intended capabilities.
+> Equal length requirement results from the fact that sequences of non-equal length cannot be compared unambiguously. For instance, what is the percentage of similarity between KEK and KEKE: 100%, when we compare them 'head-to-head', or 0%, when we compare 'tail-to-tail'? What about LALKEKFM and ALKEKF? This option expects sequences to already be alligned. If that is not the case for your data, we suggest using other programs. Alternatively, 'find_pattern' can potentially be modified to find 'imprecise' matches, which in turn can be built upon to create a proper allignment tool. However, such task goes far beyond the scope of this program's intended capabilities.
 
 ### 'length'
 > 'length' option calculates the length of protein sequence(s) (equal to the number of amino acids in them).
@@ -118,7 +119,9 @@ run_beginner_bioinf_tools('LalKekK', 'AwYLalKe', 'l', toolbox = 'proteins', opti
 **Output:**
 
 a 'list' object containing dictionaries ('dict') with the percentages of the corresponding amino acids in each sequence; the dictionary is ordered from the largest percentage of content to the smallest
+
 ⚠️ The dictionaries contain only amino acid residues whose percentage in the sequence is not equal to 0
+
 ⚠️ Results are rounded to 2 digits. In some cases, **the overall sum of percentages** for a sequence **may not be exactly 100%** due to rounding.
 
 **Usage example:**
@@ -165,7 +168,9 @@ run_beginner_bioinf_tools('lal', 'AwYLalKekQPSMFLaKeKFCLal', 'PFERDHISTKSLallaKe
 **Input:**
 
 - _an arbitrary number_ of sequences, followed by a string that should separate amino acids; each argument should be of type 'str' 
+
 **Output:**
+
 a 'list' of three-letter sequences ('str'). Each amino acid is separated by the specified separator
 
 **Usage example:**
@@ -195,3 +200,59 @@ run_beginner_bioinf_tools('haHAha', 'LAlKek', 'EQSaMplE', toolbox = 'proteins', 
 > Note that the codons were chosen at the discretion of the tool authors.
 
 ## 'fastq' - fastq_filtration toolkit
+> This toolkit, with `run_fastq_filtration` as its main function, allows to filtrate fastq sequences according to several criteria.
+
+⚠️ For this toolkit to function properly, it is very important that data is provided in the format described below!
+
+### Input:
+ This toolkit accepts **one** positional argument - 'dict' object containing fastq sequences, where:
+- *keys* are sequence names (in fastq format!) 
+- _values_ are 'tuple' objects where the first element is a sequence, and the second element is a sequence of 'quality measurements' for that sequence (see [here](https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/QualityScoreEncoding_swBS.htm))
+
+⚠️ This toolkit is designed to recieve one such 'dict' object as input; any additional positional arguments will be ignored!
+
+Filtration criteria can be specified via three keyword arguments:
+- 'gc_bounds': 'tuple' object providing range of GC content desired; equals (0,100) if not specified; if one 'int' object is provided, takes it as the upper limit
+- 'length_bounds': 'tuple' object providing range of sequence length desired; equals (0,2^32) if not specified; if one 'int' object is provided, takes it as the upper limit
+- 'quality_threshold': 'int' object providing the lower limit of average in-sequence quality; equals 0 if not specified
+### Output:
+ This toolkit returns a 'dict' object of the same format as required input, containing only those sequences that fit the criteria provided
+### Usage example:
+```python
+EXAMPLE_FASTQ = {
+    # 'name' : ('sequence', 'quality')
+    '@SRX079804:1:SRR292678:1:1101:21885:21885': ('ACAGCAACATAAACATGATGGGATGGCGTAAGCCCCCGAGATATCAGTTTACCCAGGATAAGAGATTAAATTATGAGCAACATTATTAA', 'FGGGFGGGFGGGFGDFGCEBB@CCDFDDFFFFBFFGFGEFDFFFF;D@DD>C@DDGGGDFGDGG?GFGFEGFGGEF@FDGGGFGFBGGD'),
+    '@SRX079804:1:SRR292678:1:1101:24563:24563': ('ATTAGCGAGGAGGAGTGCTGAGAAGATGTCGCCTACGCCGTTGAAATTCCCTTCAATCAGGGGGTACTGGAGGATACGAGTTTGTGTG', 'BFFFFFFFB@B@A<@D>BDDACDDDEBEDEFFFBFFFEFFDFFF=CC@DDFD8FFFFFFF8/+.2,@7<<:?B/:<><-><@.A*C>D'),
+    '@SRX079804:1:SRR292678:1:1101:30161:30161': ('GAACGACAGCAGCTCCTGCATAACCGCGTCCTTCTTCTTTAGCGTTGTGCAAAGCATGTTTTGTATTACGGGCATCTCGAGCGAATC', 'DFFFEGDGGGGFGGEDCCDCEFFFFCCCCCB>CEBFGFBGGG?DE=:6@=>A<A>D?D8DCEE:>EEABE5D@5:DDCA;EEE-DCD'),
+    '@SRX079804:1:SRR292678:1:1101:47176:47176': ('TGAAGCGTCGATAGAAGTTAGCAAACCCGCGGAACTTCCGTACATCAGACACATTCCGGGGGGTGGGCCAATCCATGATGCCTTTG', 'FF@FFBEEEEFFEFFD@EDEFFB=DFEEFFFE8FFE8EEDBFDFEEBE+E<C<C@FFFFF;;338<??D:@=DD:8DDDD@EE?EB'),
+    '@SRX079804:1:SRR292678:1:1101:149302:149302': ('TAGGGTTGTATTTGCAGATCCATGGCATGCCAAAAAGAACATCGTCCCGTCCAATATCTGCAACATACCAGTTGGTTGGTA', '@;CBA=:@;@DBDCDEEE/EEEEEEF@>FBEEB=EFA>EEBD=DAEEEEB9)99>B99BC)@,@<9CDD=C,5;B::?@;A'),
+    '@SRX079804:1:SRR292678:1:1101:170868:170868': ('CTGCCGAGACTGTTCTCAGACATGGAAAGCTCGATTCGCATACACTCGCTGAGTAAGAGAGTCACACCAAATCACAGATT', 'E;FFFEGFGIGGFBG;C6D<@C7CDGFEFGFHDFEHHHBBHHFDFEFBAEEEEDE@A2=DA:??C3<BCA7@DCDEG*EB'),
+    '@SRX079804:1:SRR292678:1:1101:171075:171075': ('CATTATAGTAATACGGAAGATGACTTGCTGTTATCATTACAGCTCCATCGCATGAATAATTCTCTAATATAGTTGTCAT', 'HGHHHHGFHHHHFHHEHHHHFGEHFGFGGGHHEEGHHEEHBHHFGDDECEGGGEFGF<FGGIIGEBGDFFFGFFGGFGF'),
+    '@SRX079804:1:SRR292678:1:1101:175500:175500': ('GACGCCGTGGCTGCACTATTTGAGGCACCTGTCCTCGAAGGGAAGTTCATCTCGACGCGTGTCACTATGACATGAATG', 'GGGGGFFCFEEEFFDGFBGGGA5DG@5DDCBDDE=GFADDFF5BE49<<<BDD?CE<A<8:59;@C.C9CECBAC=DE'),
+    '@SRX079804:1:SRR292678:1:1101:190136:190136': ('GAACCTTCTTTAATTTATCTAGAGCCCAAATTTTAGTCAATCTATCAACTAAAATACCTACTGCTACTACAAGTATT', 'DACD@BEECEDE.BEDDDDD,>:@>EEBEEHEFEHHFFHH?FGBGFBBD77B;;C?FFFFGGFED.BBABBG@DBBE'),
+    '@SRX079804:1:SRR292678:1:1101:190845:190845': ('CCTCAGCGTGGATTGCCGCTCATGCAGGAGCAGATAATCCCTTCGCCATCCCATTAAGCGCCGTTGTCGGTATTCC', 'FF@FFCFEECEBEC@@BBBBDFBBFFDFFEFFEB8FFFFFFFFEFCEB/>BBA@AFFFEEEEECE;ACD@DBBEEE'),
+    '@SRX079804:1:SRR292678:1:1101:198993:198993': ('AGTTATTTATGCATCATTCTCATGTATGAGCCAACAAGATAGTACAAGTTTTATTGCTATGAGTTCAGTACAACA', '<<<=;@B??@<>@><48876EADEG6B<A@*;398@.=BB<7:>.BB@.?+98204<:<>@?A=@EFEFFFEEFB'),
+    '@SRX079804:1:SRR292678:1:1101:204480:204480': ('AGTGAGACACCCCTGAACATTCCTAGTAAGACATCTTTGAATATTACTAGTTAGCCACACTTTAAAATGACCCG', '<98;<@@@:@CD@BCCDD=DBBCEBBAAA@9???@BCDBCGF=GEGDFGDBEEEEEFFFF=EDEE=DCD@@BBC')
+    }
+```
+```python
+run_beginner_bioinf_tools(EXAMPLE_FASTQ, toolbox = 'fastq', gc_bounds = (50,95), length_bounds = 80, quality_threshold = 27)
+# {'@SRX079804:1:SRR292678:1:1101:175500:175500': ('GACGCCGTGGCTGCACTATTTGAGGCACCTGTCCTCGAAGGGAAGTTCATCTCGACGCGTGTCACTATGACATGAATG',
+#  'GGGGGFFCFEEEFFDGFBGGGA5DG@5DDCBDDE=GFADDFF5BE49<<<BDD?CE<A<8:59;@C.C9CECBAC=DE'),
+# '@SRX079804:1:SRR292678:1:1101:190845:190845': ('CCTCAGCGTGGATTGCCGCTCATGCAGGAGCAGATAATCCCTTCGCCATCCCATTAAGCGCCGTTGTCGGTATTCC',
+#  'FF@FFCFEECEBEC@@BBBBDFBBFFDFFEFFEB8FFFFFFFFEFCEB/>BBA@AFFFEEEEECE;ACD@DBBEEE')}
+```
+
+## Useful links:
+For either checking this code, or building upon it, we recommend the following resources:
+- [generate random protein sequence](https://www.bioinformatics.org/sms2/random_protein.html?)
+- [generate random nucleic acid sequence with specified length, GC content, ect.](http://www.molbiol.ru/eng/scripts/01_16.html)
+- [quality score encoding](https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/QualityScoreEncoding_swBS.htm)
+- [ASCII table](https://www.asciitable.com/)
+
+## Contacts and acknowledgements:
+[Dmitry Matach](https://github.com/zmitserbio): author;
+
+[Gleb Bobkov](https://github.com/GlebBobkov): contributor; 'length' and 'dna_code' options in protein_tools toolkit;
+
+[Olga Bagrova](https://github.com/Olga-Bagrova): contributor; 'percentage' and '3letter_name' options in protein_tools toolkit.   
