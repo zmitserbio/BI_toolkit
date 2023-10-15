@@ -175,7 +175,7 @@ def save_fastq_dict_to_file(fastq_dict: dict, output_filename: str):
             fastq.write(fastq_dict[name][1] + '\n')
 
 
-def run_beginner_bioinf_tools(*input_data: str or dict, toolbox: str = None, **kwargs: str) -> str or list or dict:
+def run_beginner_bioinf_tools(*input_data: str, toolbox: str = None, **kwargs: str) -> str or list or dict:
     """
     Performs various operations on nucleic acid, protein and fastq sequences
     arguments:
@@ -189,6 +189,7 @@ def run_beginner_bioinf_tools(*input_data: str or dict, toolbox: str = None, **k
     elif toolbox == 'proteins':
         return run_protein_tools(input_data, kwargs['options'])
     elif toolbox == 'fastq':
-        return run_fastq_filtration(input_data[0], gc_bounds = kwargs['gc_bounds'], length_bounds = kwargs['length_bounds'], quality_threshold = kwargs['quality_threshold'])
+        check_fastq_file(kwargs['path'])
+        save_fastq_dict_to_file(run_fastq_filtration(convert_fastq_to_dict(kwargs['path']), gc_bounds=kwargs['gc_bounds'], length_bounds=kwargs['length_bounds'], quality_threshold=kwargs['quality_threshold']), kwargs['output_filename'])
     else:
         raise ValueError('Invalid input: there is no toolbox corresponding to value ' + str(toolbox) + '!')
