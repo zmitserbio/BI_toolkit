@@ -1,3 +1,35 @@
+def check_fastq_file(path: str):
+    """
+    Check whether the path and file provided are valid for further processing
+    arguments:
+    - path (str): path to .fastq file
+    return:
+    - no return
+    """
+    import os
+    if '.fastq' in os.path.basename(path):
+        if os.path.isfile(path):
+            with open(path) as fastq:
+                line_count = 0
+                total_line_count = 0
+                for line in fastq:
+                    line_count += 1
+                    total_line_count += 1
+                    if line_count == 1:
+                        if not line.startswith('@'):
+                            raise ValueError('Incorrect file content! Suggestion: check the lines near line number ' + str(total_line_count) + ' in the provided file.')
+                    if line_count != 1 and line_count != 4 and line.startswith('@'):
+                        raise ValueError('Incorrect file content! Suggestion: check the lines near line number ' + str(total_line_count) + ' in the provided file.')
+                    if line_count == 4:
+                        line_count = 0
+                if line_count != 0:
+                    raise ValueError('Incorrect file content! Suggestion: check the end of the file')
+        else:
+            raise ValueError(path + ' is not a correct path to a file!')
+    else:
+        raise ValueError('Invalid input: path to a .fastq file was expected!')
+
+
 def run_dna_rna_tools(inputs: tuple) -> list or str:
     """
     Produce a list of either transcripts, reverse sequences, complementary sequences or reverse complementary sequences
