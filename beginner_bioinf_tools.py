@@ -30,6 +30,33 @@ def check_fastq_file(path: str):
         raise ValueError('Invalid input: path to a .fastq file was expected!')
 
 
+def convert_fastq_to_dict(path: str) -> dict:
+    """
+    Convert information from a .fastq file to a dict object
+    arguments:
+    - path (str): path to .fastq file
+    return:
+    - fastq_dict (dict): dictionary with fastq sequences from a file
+    """
+    import os
+    fastq_dict = {}
+    with open(path) as fastq:
+        line_count = 0
+        current_sequence_name = ''
+        for line in fastq:
+            line_count += 1
+            if line_count == 1:
+                current_sequence_name = line.strip()
+                fastq_dict[current_sequence_name] = []
+            if line_count == 2:
+                fastq_dict[current_sequence_name].append(line.strip())
+            if line_count == 4:
+                fastq_dict[current_sequence_name].append(line.strip())
+                fastq_dict[current_sequence_name] = tuple(fastq_dict[current_sequence_name])
+                line_count = 0
+    return fastq_dict
+
+
 def run_dna_rna_tools(inputs: tuple) -> list or str:
     """
     Produce a list of either transcripts, reverse sequences, complementary sequences or reverse complementary sequences
