@@ -152,6 +152,12 @@ def run_fastq_filtration(seqs: dict, gc_bounds: tuple = (0, 100), length_bounds:
     return seqs_filtered
 
 
+def create_results_dir_if_doesnt_exist():
+    import os
+    if not os.path.exists('fastq_filtrator_results'):
+        os.makedirs('fastq_filtrator_results')
+
+
 def run_beginner_bioinf_tools(*input_data: str or dict, toolbox: str = None, **kwargs: str) -> str or list or dict:
     """
     Performs various operations on nucleic acid, protein and fastq sequences
