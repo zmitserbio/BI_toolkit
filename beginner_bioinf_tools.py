@@ -158,6 +158,23 @@ def create_results_dir_if_doesnt_exist():
         os.makedirs('fastq_filtrator_results')
 
 
+def save_fastq_dict_to_file(fastq_dict: dict, output_filename: str):
+    """
+    Save dict object with .fastq sequences into a file
+    arguments:
+    - fastq_dict (dict): dictionary with .fastq sequences
+    return:
+    - no return
+    """
+    import os
+    create_results_dir_if_doesnt_exist()
+    with open(os.path.join('fastq_filtrator_results', str(output_filename) + '.fastq'), mode='w') as fastq:
+        for name in fastq_dict:
+            fastq.write(name + '\n')
+            fastq.write(fastq_dict[name][0] + '\n')
+            fastq.write(fastq_dict[name][1] + '\n')
+
+
 def run_beginner_bioinf_tools(*input_data: str or dict, toolbox: str = None, **kwargs: str) -> str or list or dict:
     """
     Performs various operations on nucleic acid, protein and fastq sequences
